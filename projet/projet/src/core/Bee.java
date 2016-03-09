@@ -52,7 +52,7 @@ public class Bee extends Insect {
 	 * @return if the bee can advance
 	 */
 	public boolean isBlocked () {
-		return place.getAnt() != null && place.getAnt().getViewable() == true; 
+		return place.getAnt() != null && place.getAnt()[0].getViewable() == true; 
 	}
 
 	/**
@@ -61,11 +61,14 @@ public class Bee extends Insect {
 	 */
 	@Override
 	public void action (AntColony colony) {
-		if (isBlocked()) {
-			sting(place.getAnt());
-		}
-		else if (armor > 0) {
-			moveTo(place.getExit());
+		Ant[] ants = place.getAnt();
+		for(int x=0; x < ants.length; x++) {
+			if (isBlocked()) {
+				sting(ants[x]);
+			}
+			else if (armor > 0) {
+				moveTo(place.getExit());
+			}
 		}
 	}
 }

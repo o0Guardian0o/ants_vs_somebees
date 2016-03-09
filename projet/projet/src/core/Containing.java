@@ -6,10 +6,10 @@ package core;
 
 public interface Containing {
 		
-	public boolean addInsectIn() ;
+	public void addInsectIn(Ant ant) ;
 	
-	public boolean removeInsectIn() ;
+	public void removeInsectIn(Ant ant) ;
 	
-	public Insect getInsectIn();
+	public Ant getInsectIn();
 	
 }

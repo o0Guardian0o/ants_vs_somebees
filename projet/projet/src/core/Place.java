@@ -14,7 +14,7 @@ public class Place {
 	private Place exit; // where you leave this place to
 	private Place entrance; // where you enter this place from
 	private ArrayList<Bee> bees; // bees currently in the place
-	private Ant ant; // ant (singular) currently in the place
+	private ArrayList<Ant> ants; // ants currently in the place
 
 	/**
 	 * Creates a new place with the given name and exit
@@ -29,7 +29,7 @@ public class Place {
 		this.exit = exit;
 		entrance = null;
 		bees = new ArrayList<Bee>();
-		ant = null;
+		ants = new ArrayList<Ant>();
 	}
 
 	/**
@@ -47,8 +47,39 @@ public class Place {
 	 *
 	 * @return the place's ant
 	 */
-	public Ant getAnt () {
-		return ant;
+	public Ant[] getAnt () {
+		return ants.toArray(new Ant[0]);
+	}
+	/**
+	 * Returns the ant's container
+	 * @return the ant's container
+	 */
+	public Containing getAntContainer() {
+		Containing ant;
+		
+		for (Ant a : this.getAnt()) {
+			if (a instanceof Containing) {
+				ant = (Containing) a;
+				return ant;
+			}
+		}
+		return null;
+	}
+	/**
+	 * Returns the position of the container in the tab
+	 * @return the position of the container
+	 */
+	public int getContainerPos() {
+		int pos;
+		
+		Ant[] antplace = this.getAnt();
+		for (int x = 0; x <= antplace.length; x++ ) {
+			if (antplace[x] instanceof Containing) {
+				pos = x;
+				return pos;
+			}
+		}
+		return -1;
 	}
 
 	/**
@@ -124,28 +155,30 @@ public class Place {
 	 *            The ant to add to the place.
 	 */
 	public void addInsect (Ant ant) {
-		if (this.ant == null) {
-			this.ant = ant;
+		//if (this.ants == null) {
+			this.ants.add(ant);
 			ant.setPlace(this);
-		}
-		else {
-			if (this.ant instanceof Containing) {
-				this.ant = ant;
-				Containing cant = (Containing) ant;
-				cant.addInsectIn();
+		//}
+		/*else {
+			if (this.ants instanceof Containing) {
+				Containing cant = (Containing) this.ants;
+				cant.addInsectIn(ant);
+				this.ants.add(ant);
+				ant.setPlace(this);
 			}
 			else {
 				if (ant instanceof Containing) {
-					Containing current_ant = (Containing) this.ant;
-					removeInsect(this.ant);
+					ArrayList<Ant> current_ant = this.ants;
+					removeInsect(this.ants.get(0));
 					ant.setPlace(this);
-					current_ant.addInsectIn();
+					Containing cant = (Containing) ant;
+					cant.addInsectIn(current_ant.get(0));
 				}
 				else {
 					System.out.println("Already an ant which can't contain another one in " + this); // report error
 				}
 			}
-		}
+		}*/
 	}
 
 	/**
@@ -166,14 +199,40 @@ public class Place {
 	 *            The ant to remove from the place
 	 */
 	public void removeInsect (Ant ant) {
-		if (this.ant == ant) {
-			this.ant = null;
+		if(this.getAntContainer() != null) {
+			Ant dead_ant = (Ant) this.getAntContainer();
+			ants.remove(dead_ant);
+			dead_ant.setPlace(null);
+		}
+		else if (this.ants.contains(ants)) {
+			ants.remove(ant);
 			ant.setPlace(null);
 		}
 		else {
 			System.out.println(ant + " is not in " + this);
 		}
-	}
+	}		
+		
+		
+		
+		/*if (this.getAntContainer() != null) {
+			if (this.ants.contains(ant)) {
+				this.getAntContainer().removeInsectIn(ant);
+				Ant cont_ant = (Ant) this.getAntContainer();
+				cont_ant.setPlace(null);
+				addInsect(ant);
+			}
+			else {
+				System.out.println(ant + " is not in " + this);
+			}
+		}
+		else {
+			if (this.ants.contains(ant)) {
+				ants.remove(ant);
+				ant.setPlace(null);
+			}
+ 		}*/
+
 
 	/**
 	 * Removes the bee from the place. If the given bee is not in this place, this method has no effect

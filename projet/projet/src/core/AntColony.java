@@ -159,11 +159,24 @@ public class AntColony {
 	 * @param place
 	 *            Where to remove the ant from
 	 */
+	
 	public void removeAnt (Place place) {
 		if (place.getAnt() != null) {
-			place.removeInsect(place.getAnt());
+			place.removeInsect(place.getAnt()[0]);
 		}
 	}
+	 /*public void removeAnt (Place place) {
+		if (place.getAnt() != null) {
+			place.removeInsect()
+			if (place.getAntContainer() != null) {
+				Ant cont_ant = (Ant) place.getAntContainer();
+				place.removeInsect(cont_ant);
+			}
+			else {
+				place.removeInsect(place.getAnt()[0]);
+			}
+		}
+	}*/
 
 	/**
 	 * Returns a list of all the ants currently in the colony
@@ -173,8 +186,8 @@ public class AntColony {
 	public ArrayList<Ant> getAllAnts () {
 		ArrayList<Ant> ants = new ArrayList<Ant>();
 		for (Place p : places) {
-			if (p.getAnt() != null) {
-				ants.add(p.getAnt());
+			for (Ant a : p.getAnt()) {  
+				ants.add(a);
 			}
 		}
 		return ants;
