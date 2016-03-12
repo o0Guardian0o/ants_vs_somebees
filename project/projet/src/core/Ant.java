@@ -82,6 +82,11 @@ public abstract class Ant extends Insect {
 	 */
 	@Override
 	public void leavePlace () {
-		place.removeInsect(this);
+		if (!(this instanceof Unkillable)) {
+			place.removeInsect(this);
+		}
+		else {
+			System.out.println(this + "Can't be kill"); //information
+		}
 	}
 }

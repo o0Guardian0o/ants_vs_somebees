@@ -14,7 +14,7 @@ public class AntColony {
 	public static final int MAX_TUNNEL_LENGTH = 8;
 
 	private int food; // amount of food available
-	private Place queenPlace; // where the queen is
+	private QueenPlace queenPlace; // where the queen is
 	private ArrayList<Place> places; // the places in the colony
 	private ArrayList<Place> beeEntrances; // places which bees can enter (the starts of the tunnels)
 
@@ -37,7 +37,7 @@ public class AntColony {
 		// init variables
 		places = new ArrayList<Place>();
 		beeEntrances = new ArrayList<Place>();
-		queenPlace = new Place(QUEEN_NAME); // magic variable namexw
+		queenPlace = new QueenPlace(QUEEN_NAME); // magic variable namexw
 		
 		int counter = 0;
 		
@@ -87,7 +87,7 @@ public class AntColony {
 	 *
 	 * @return The queen's location
 	 */
-	public Place getQueenPlace () {
+	public QueenPlace getQueenPlace () {
 		return queenPlace;
 	}
 

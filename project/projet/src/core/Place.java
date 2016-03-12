@@ -65,6 +65,10 @@ public class Place {
 	public Bee[] getBees () {
 		return bees.toArray(new Bee[0]);
 	}
+	
+	public ArrayList<Bee> getBebees() {
+		return this.bees;
+	}
 
 	/**
 	 * Returns a nearby bee, up to the maxDistance ahead. If multiple bees are the same distance, a random bee is chosen
@@ -162,9 +166,6 @@ public class Place {
 				else {
 					System.out.println("A(2)lready an ant which can't contain another one in " + this); // report error
 				}
-			}
-			else {
-				System.out.println("(3)Already an ant which can't contain another one in " + this); // report error
 			}
 		}
 
