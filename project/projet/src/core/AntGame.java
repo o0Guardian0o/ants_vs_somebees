@@ -28,6 +28,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import ants.ThrowerAnt;
 
@@ -71,7 +77,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 	private final Image REMOVER_IMAGE = ImageUtils.loadImage("img/remover.gif");
 
 	// positioning constants
-	public static final Dimension FRAME_SIZE = new Dimension(1024, 768);
+	public static final Dimension FRAME_SIZE = new Dimension(1054, 768);
 	public static final Dimension ANT_IMAGE_SIZE = new Dimension(66, 71); // assumed size; may be greater than actual image size
 	public static final int BEE_IMAGE_WIDTH = 58;
 	public static final Point PANEL_POS = new Point(20, 40);
@@ -143,7 +149,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 		setBackground(Color.WHITE);
 
 		// make and show the frame!
-		JFrame frame = new JFrame("Ants vs. Some-Bees");
+		JFrame frame = new JFrame("Ants vs. Some-Beebees");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.add(this);
@@ -167,6 +173,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 		}
 		g2d.drawString("Ant selected: " + antString, 20, 20); // hard-coded positions, make variable?
 		g2d.drawString("Food: " + colony.getFood() + ", Turn: " + turn, 20, 140);
+		g2d.drawString("Points : " + this.gamepoint.getGamePoint(), 800, 140);
 
 		drawColony(g2d);
 		drawBees(g2d);
@@ -175,7 +182,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 		if (!clock.isRunning()) { // start text
 			g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 32));
 			g2d.setColor(Color.RED);
-			g2d.drawString("CLICK TO START", 350, 550);
+			g2d.drawString("CLICK TO START !", 350, 550);
 		}
 	}
 
@@ -250,6 +257,8 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 		// System.out.println("frame: "+frame);
 		if (frame == FPS * TURN_SECONDS) { // if TURN seconds worth of frames
 			turn++; // next turn
+			this.gamepoint.setMultFactor(this.turn);
+			this.gamepoint.setGamePoint(this.colony.getAllDeadBees());
 			frame = 0; // reset frame
 		}
 
@@ -438,7 +447,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 			// box status
 			g2d.setColor(Color.WHITE);
 			if (ant.getFoodCost() > colony.getFood()) {
-				g2d.setColor(Color.GRAY);
+				g2d.setColor(Color.RED);
 			}
 			else if (ant == selectedAnt) {
 				g2d.setColor(Color.BLUE);
@@ -506,7 +515,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 	private void initializeBees () {
 		Bee[] bees = hive.getBees();
 		for (int i = 0; i < bees.length; i++) {
-			allBeePositions.put(bees[i], new AnimPosition((int) (HIVE_POS.x + (20 * Math.random() - 10)), (int) (HIVE_POS.y + (100 * Math.random() - 50))));
+			allBeePositions.put(bees[i], new AnimPosition((int) (HIVE_POS.x + (100 * Math.random() - 50)), (int) (HIVE_POS.y + (300 * Math.random() - 50))));
 		}
 	}
 
