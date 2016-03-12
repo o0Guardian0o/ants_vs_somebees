@@ -105,7 +105,7 @@ public class QueenAnt extends ScubaThrowerAnt implements Unkillable {
 				if (queenPlace.getEntrance() != null) {
 					afterqueen = queenPlace.getEntrance();
 					if (afterqueen.getAnt() != null) {
-						Ant ant = beforequeen.getAnt();
+						Ant ant = afterqueen.getAnt();
 						if (ant instanceof Containing) {
 							Containing cont_ant = (Containing) ant;
 							if(!(cont_ant.getInsectIn().getBuffed())) {

@@ -47,13 +47,14 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 	// game models
 	private AntColony colony;
 	private Hive hive;
+	private GamePoint gamepoint;
 	private static final String ANT_FILE = "antlist.properties";
 	private static final String ANT_PKG = "ants";
 
 	// game clock & speed
 	public static final int FPS = 30; // target frames per second
-	public static final int TURN_SECONDS = 3; // seconds per turn
-	public static final double LEAF_SPEED = .3; // in seconds
+	public static final int TURN_SECONDS = 2; // seconds per turn
+	public static final double LEAF_SPEED = .2; // in seconds
 	private int turn; // current game turn
 	private int frame; // time elapsed since last turn
 	private Timer clock;
@@ -105,10 +106,11 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 	 * @param hive
 	 *            The hive (and attack plan) for the game
 	 */
-	public AntGame (AntColony colony, Hive hive) {
+	public AntGame (AntColony colony, Hive hive, GamePoint gamepoint) {
 		// game init stuff
 		this.colony = colony;
 		this.hive = hive;
+		this.gamepoint = gamepoint;
 
 		// game clock tracking
 		frame = 0;
@@ -255,11 +257,15 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 		{
 			// check for end condition before proceeding
 			if (colony.queenHasBees()) { // we lost!
-				JOptionPane.showMessageDialog(this, "The ant queen has perished! Please try again.", "Bzzzzz!", JOptionPane.PLAIN_MESSAGE);
+				this.gamepoint.setMultFactor(this.turn);
+				this.gamepoint.setGamePoint(this.colony.getAllDeadBees());
+				JOptionPane.showMessageDialog(this, "The ant queen has perished with " + this.gamepoint.getGamePoint() + " points ! Please try again.", "Bzzzzz!", JOptionPane.PLAIN_MESSAGE);
 				System.exit(0); // quit
 			}
 			if (hive.getBees().length + colony.getAllBees().size() == 0) { // no more bees--we won!
-				JOptionPane.showMessageDialog(this, "All bees are vanquished. You win!", "Yaaaay!", JOptionPane.PLAIN_MESSAGE);
+				this.gamepoint.setMultFactor(this.turn);
+				this.gamepoint.setGamePoint(this.colony.getAllDeadBees());
+				JOptionPane.showMessageDialog(this, "All bees are vanquished. You win with : " + this.gamepoint.getGamePoint() + " points !", "Yaaaay!", JOptionPane.PLAIN_MESSAGE);
 				System.exit(0); // quit
 			}
 		}
@@ -691,6 +697,10 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 			}
 			return img; // return the image
 		}
+	}
+	
+	public int getTurn() {
+		return this.turn;
 	}
 
 }

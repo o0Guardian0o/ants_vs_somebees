@@ -13,7 +13,8 @@ public class Place {
 	private String name; // a name we can use for debugging
 	private Place exit; // where you leave this place to
 	private Place entrance; // where you enter this place from
-	private ArrayList<Bee> bees; // bees currently in the place
+	private ArrayList<Bee> bees;// bees currently in the place
+	private ArrayList<Bee> dead_bees;
 	private Ant ant; // ant (singular) currently in the place
 	private Containing container;
 
@@ -30,6 +31,7 @@ public class Place {
 		this.exit = exit;
 		entrance = null;
 		bees = new ArrayList<Bee>();
+		dead_bees = new ArrayList<Bee>();
 		ant = null;
 		container = null;
 	}
@@ -68,6 +70,10 @@ public class Place {
 	
 	public ArrayList<Bee> getBebees() {
 		return this.bees;
+	}
+	
+	public Bee[] getDeadBees() {
+		return dead_bees.toArray(new Bee[0]);
 	}
 
 	/**
@@ -220,6 +226,7 @@ public class Place {
 		if (bees.contains(bee)) {
 			bees.remove(bee);
 			bee.setPlace(null);
+			dead_bees.add(bee);
 		}
 		else {
 			System.out.println(bee + " is not in " + this);

@@ -9,9 +9,11 @@ public class SlowThrowerAnt extends ThrowerAnt {
 	}
 	
 	public void slow() {
-		this.getTarget().setSlowed(true);
-		this.getTarget().setTurnSlow(2);
-		this.getTarget().setCounter(3);
+		if (super.getTarget() != null) {
+			super.getTarget().setSlowed(true);
+			super.getTarget().setTurnSlow(2);
+			super.getTarget().setCounter(3);
+		}
 	}
 	
 	public void action(AntColony colony) {

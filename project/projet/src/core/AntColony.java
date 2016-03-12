@@ -206,6 +206,16 @@ public class AntColony {
 		}
 		return bees;
 	}
+	
+	public ArrayList<Bee> getAllDeadBees () {
+		ArrayList<Bee> dead_bees = new ArrayList<Bee>();
+		for (Place p : places) {
+			for (Bee b : p.getDeadBees()) {
+				dead_bees.add(b);
+			}
+		}
+		return dead_bees;
+	}
 
 	@Override
 	public String toString () {
