@@ -11,6 +11,7 @@ import core.Bee;
  */
 public class ThrowerAnt extends Ant {
 
+	protected int range;
 
 	/**
 	 * Creates a new Thrower Ant.
@@ -19,6 +20,7 @@ public class ThrowerAnt extends Ant {
 	public ThrowerAnt () {
 		super(1,4);
 		damage = 1;
+		range = 3;
 	}
 
 	/**
@@ -27,7 +29,7 @@ public class ThrowerAnt extends Ant {
 	 * @return A bee to target
 	 */
 	public Bee getTarget () {
-		return place.getClosestBee(0, 3);
+		return place.getClosestBee(0, this.range);
 	}
 
 	@Override

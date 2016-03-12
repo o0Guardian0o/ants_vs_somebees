@@ -11,5 +11,3 @@ public class AntsVsSomeBees {
 		new AntGame(colony, hive); // launch the game
 	}
 }
-
-

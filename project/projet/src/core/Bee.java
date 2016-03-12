@@ -7,6 +7,10 @@ package core;
  */
 public class Bee extends Insect {
 
+	private boolean slowed;
+	private int turn_slow;
+	private int counter;
+	
 	private static final int DAMAGE = 1;
 
 	/**
@@ -18,6 +22,7 @@ public class Bee extends Insect {
 	public Bee (int armor) {
 		super(armor);
 		this.watersafe = true;
+		this.slowed = false;
 	}
 
 	/**
@@ -61,11 +66,62 @@ public class Bee extends Insect {
 	 */
 	@Override
 	public void action (AntColony colony) {
-		if (isBlocked()) {
-			sting(place.getAnt());
+		if (!(this.slowed)) {
+			if (isBlocked()) {
+				sting(place.getAnt());
+			}
+			else if (armor > 0) {
+				moveTo(place.getExit());
+			}
 		}
-		else if (armor > 0) {
-			moveTo(place.getExit());
+		else {
+			this.actionSlowed(colony);
 		}
+	}
+	
+	
+	public void actionSlowed(AntColony colony) {
+		if (turn_slow == 0) {
+			if (isBlocked()) {
+				sting(place.getAnt());
+				this.counter -=1;
+				this.turn_slow = 2;
+			}
+			else if (armor > 0) {
+				moveTo(place.getExit());
+				this.counter -= 1;
+				this.turn_slow = 2;
+			}
+		}
+		else if (counter == 0) {
+			this.setSlowed(false);
+		}
+		else {
+			this.turn_slow -= 1;
+		}
+	}
+	
+	public boolean getSlowed () {
+		return this.slowed;
+	}
+	
+	public void setSlowed(boolean bool) {
+		this.slowed = bool;
+	}
+	
+	public int getTurnSlow() {
+		return this.turn_slow;
+	}
+	
+	public int getCounter() {
+		return this.counter;
+	}
+	
+	public void setTurnSlow(int i) {
+		this.turn_slow = i;
+	}
+	
+	public void setCounter(int i) {
+		this.counter = i;
 	}
 }
