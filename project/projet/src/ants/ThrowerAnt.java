@@ -36,7 +36,17 @@ public class ThrowerAnt extends Ant {
 	public void action (AntColony colony) {
 		Bee target = getTarget();
 		if (target != null) {
-			target.reduceArmor(damage);
+			if ( this.damage < target.getArmor()) {
+				System.out.println("Thrower ant Report : \n " + this + "has hurt " + this.getTarget() + " by : " + this.damage);
+				target.reduceArmor(damage);
+			}
+			else {
+				System.out.println("Thrower ant Report : \n " + this + "has hurt " + this.getTarget() + " by : " + this.damage);
+				if (colony.getLvSystem()) {
+					this.expUp(target.getArmorInit());
+				}
+				target.reduceArmor(damage);
+			}
 		}
 	}
 }

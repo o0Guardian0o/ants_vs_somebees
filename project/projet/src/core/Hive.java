@@ -17,6 +17,7 @@ public class Hive extends Place {
 	private int beeArmor; // armor for all the bees
 	private Map<Integer, Bee[]> waves; // a mapping from attack times to the list of bees that will charge in
 
+
 	/**
 	 * Creates a new hive, in which Bees have the given armor
 	 *

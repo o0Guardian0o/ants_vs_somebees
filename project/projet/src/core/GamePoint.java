@@ -1,7 +1,7 @@
 package core;
 import java.util.ArrayList;
 
-import core.AntColony;
+
 
 public class GamePoint {
 	

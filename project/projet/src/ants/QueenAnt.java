@@ -68,7 +68,17 @@ public class QueenAnt extends ScubaThrowerAnt implements Unkillable {
 			//initialisation des variables utiles
 			Bee target = getTarget();
 			if (target != null) {
-				target.reduceArmor(damage);
+				if ( this.damage < target.getArmor()) {
+					System.out.println("Thrower ant Report : \n " + this + "has hurt " + this.getTarget() + " by : " + this.damage);
+					target.reduceArmor(damage);
+				}
+				else {
+					System.out.println("Thrower ant Report : \n " + this + "has hurt " + this.getTarget() + " by : " + this.damage);
+					if (colony.getLvSystem()) {
+						this.expUp(target.getArmorInit());
+					}
+					target.reduceArmor(damage);
+				}
 			}
 		
 			if (this.getPlace() != null) {
@@ -83,24 +93,24 @@ public class QueenAnt extends ScubaThrowerAnt implements Unkillable {
 							Containing cont_ant = (Containing) ant;
 							if(!(cont_ant.getInsectIn().getBuffed())) {
 								cont_ant.getInsectIn().setDamage(cont_ant.getInsectIn().getDamage() + buff);
-								System.out.println(cont_ant.getInsectIn() + "has been buffed"); // information
+								System.out.println("Queen report : \n" + cont_ant.getInsectIn() + "has been buffed"); // information
 								cont_ant.getInsectIn().setbuffed(true);
 							}
 						}
 						else {
 							if(!(ant.getBuffed())) {
 								ant.setDamage(ant.getDamage() + buff);
-								System.out.println(ant + "has been buffed"); // information
+								System.out.println("Queen report : \n" + ant + "has been buffed"); // information
 								ant.setbuffed(true);
 							}
 						}
 					}
 					else {
-						System.out.println("There is no ant to buff on the place before queen :  " + beforequeen); //information
+						System.out.println("Queen report : \n There is no ant to buff on the place before queen :  " + beforequeen); //information
 					}
 				}
 				else {
-					System.out.println("No place beforequeen" + queenPlace); // information
+					System.out.println("Queen report : \n No place beforequeen" + queenPlace); // information
 				}
 				if (queenPlace.getEntrance() != null) {
 					afterqueen = queenPlace.getEntrance();
@@ -110,30 +120,41 @@ public class QueenAnt extends ScubaThrowerAnt implements Unkillable {
 							Containing cont_ant = (Containing) ant;
 							if(!(cont_ant.getInsectIn().getBuffed())) {
 								cont_ant.getInsectIn().setDamage(cont_ant.getInsectIn().getDamage() + buff);
-								System.out.println(cont_ant.getInsectIn() + "has been buffed"); // information
+								System.out.println("Queen report : \n" + cont_ant.getInsectIn() + "has been buffed"); // information
 								cont_ant.getInsectIn().setbuffed(true);
 							}
 						}
 						else {
 							if(!(ant.getBuffed())) {
 								ant.setDamage(ant.getDamage() + buff);
-								System.out.println(ant + "has been buffed"); // information
+								System.out.println("Queen report : \n" + ant + "has been buffed"); // information
 								ant.setbuffed(true);
 							}
 						}
 					}
 					else {
-						System.out.println("There is no ant to buff on the place after queen :  " + afterqueen); //information
+						System.out.println("Queen report : \n There is no ant to buff on the place after queen :  " + afterqueen); //information
 					}
 				}
 				else {
-					System.out.println("No place afterqueen :  " + queenPlace); //information
+					System.out.println("Queen report : \n No place afterqueen :  " + queenPlace); //information
 				}
 			}
 		}
 		else {
 			this.killFalseQueen();
-			System.out.println("The false queen has been killed !!!" + this.numero_queen); //information
+			System.out.println("Queen report : \n The false queen has been killed !!!" + this.numero_queen); //information
 		}
+	}
+	
+	public void levelUp() {
+		this.lv ++;
+		this.damage += this.lv;
+		this.armor = this.armor_init + lv -1;
+		this.buff += 1;
+		System.out.println("Ant report : \n " + this + "has level up !" +
+		"\n She has " + this.damage + " damage,"
+				+ "\n " + this.armor + " armor, "
+						+ "\n " + this.buff + "buff points !" );
 	}
 }

@@ -1,7 +1,6 @@
 package core;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,6 +12,10 @@ import java.awt.event.MouseEvent;
 
 public class ButtonLeave extends JButton implements MouseListener {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private Image img;
 	

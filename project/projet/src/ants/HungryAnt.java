@@ -19,6 +19,10 @@ public class HungryAnt extends Ant {
 	public void action (AntColony colony) {
 		Bee Target = getTarget();
 		if (time==0 && Target != null) {
+			System.out.println("Hungry ant Report : \n " +this + "has eaten " + Target);
+			if (colony.getLvSystem()) {
+				this.expUp(Target.getArmorInit());
+			}
 			Target.reduceArmor(Target.getArmor());
 			time = 3;
 		}

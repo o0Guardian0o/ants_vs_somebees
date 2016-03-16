@@ -22,7 +22,7 @@ public abstract class Insect {
 	 */
 	public Insect (int armor, Place place) {
 		if (armor <= 0) {
-			throw new IllegalArgumentException("Cannot create an insect with armor of 0");
+			throw new IllegalArgumentException("Insect report : \n Cannot create an insect with armor of 0");
 		}
 		this.armor = armor;
 		this.place = place;
@@ -85,7 +85,7 @@ public abstract class Insect {
 	public void reduceArmor (int amount) {
 		armor -= amount;
 		if (armor <= 0) {
-			System.out.println(this + " ran out of armor and expired");
+			System.out.println("Insect report : \n" + this + " ran out of armor and expired");
 			leavePlace();
 		}
 	}

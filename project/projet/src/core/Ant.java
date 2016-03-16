@@ -12,6 +12,10 @@ public abstract class Ant extends Insect {
 	protected boolean containable;
 	protected boolean buffed;
 	protected int damage;
+	protected int lv;
+	protected int exp;
+	protected int exp_seuil;
+	protected int armor_init;
 	
 	/**
 	 * Creates a new Ant, with a food cost of 0.
@@ -21,14 +25,18 @@ public abstract class Ant extends Insect {
 	 */
 	public Ant (int armor) {
 		super(armor, null);
+		armor_init = armor;
 		foodCost = 0;
 		viewable = true;
 		containable = true;
 		buffed = false;
 		damage = 0;
+		lv = 1;
+		exp = 0;
+		exp_seuil = 3*this.lv;
 	}
 	/**
-	 * Creates a new Ant, with a food cost of foodneeded.
+	 * Creates a new Ant, with a specific food cost.
 	 * @param armor
 	 * 		The armor of the ant.
 	 * @param foodneeded
@@ -36,13 +44,43 @@ public abstract class Ant extends Insect {
 	 */
 	public Ant (int armor, int foodneeded) {
 		super(armor, null);
+		armor_init = armor;
 		foodCost = foodneeded;
 		viewable = true;
 		containable = true;
 		buffed = false;
 		damage = 0;
+		lv = 1;
+		exp = 0;
+		exp_seuil = 3*this.lv;
 	}
 
+	public void levelUp() {
+		this.lv ++;
+		this.damage += this.lv;
+		this.armor = this.armor_init + lv -1;
+		System.out.println("Ant report : \n " + this + "has level up !"
+				+ "\n He has " + this.damage + " damgage, " +
+				"\n " + this.armor + " armor !");
+	}
+	
+	public void expUp(int i) {
+		if (this.exp + i >= exp_seuil) {
+			this.levelUp();
+			this.exp = exp_seuil - this.exp;
+			this.exp_seuil = 3*this.lv;
+		}
+		else {
+			this.exp += i;
+			System.out.println("Ant report : \n " + this + "has gained exp !"
+					+ "\n Still " + this.exptoearn() + " to earn !");
+		}
+	}
+	
+	public int exptoearn() {
+		return this.exp_seuil - this.exp;
+	}
+	
 	/**
 	 * Returns the ant's food cost
 	 *
@@ -76,8 +114,23 @@ public abstract class Ant extends Insect {
 		return this.damage;
 	}
 	
+	public int getLv() {
+		return this.lv;
+	}
 	
-	/**
+	public void setLv(int lv) {
+		this.lv = lv;
+	}
+	
+	public int getExp() {
+		return this.exp;
+	}
+	
+	public int getExpSeuil() {
+		return this.exp_seuil;
+	}
+	
+	/** 
 	 * Removes the ant from its current place
 	 */
 	@Override
@@ -86,7 +139,7 @@ public abstract class Ant extends Insect {
 			place.removeInsect(this);
 		}
 		else {
-			System.out.println(this + "Can't be kill"); //information
+			System.out.println("Ant report : " + this + "Can't be kill"); //information
 		}
 	}
 }

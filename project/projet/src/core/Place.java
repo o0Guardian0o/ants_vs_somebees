@@ -154,7 +154,7 @@ public class Place {
 					cont_ant.addInsectIn(on_place_ant);
 				}
 				else {
-					System.out.println("(1)Already an ant which can't contain another one in " + this); // report error
+					System.out.println("Place report : \n (1) Already an ant which can't contain another one in " + this); // report error
 				}
 			}
 		}
@@ -165,12 +165,17 @@ public class Place {
 			}
 			else if (this.ant instanceof Containing) {
 				Containing cont_ant = (Containing) this.ant;
-				if (cont_ant.addInsectIn(ant)) {
-					cont_ant.addInsectIn(ant);
-					ant.setPlace(this);
+				if (cont_ant.getInsectIn() == null) {
+					if (cont_ant.addInsectIn(ant)) {
+						cont_ant.addInsectIn(ant);
+						ant.setPlace(this);
+					}
+					else {
+						System.out.println("Place report : \n (2) Already an ant which can't contain another one in " + this); // report error
+					}
 				}
 				else {
-					System.out.println("A(2)lready an ant which can't contain another one in " + this); // report error
+					System.out.println("Place report : \n (3) Already an ant which contains an another one in " + this); //report error
 				}
 			}
 		}
@@ -229,7 +234,7 @@ public class Place {
 			dead_bees.add(bee);
 		}
 		else {
-			System.out.println(bee + " is not in " + this);
+			System.out.println("Place report : \n " + bee + " is not in " + this);
 		}
 	}
 

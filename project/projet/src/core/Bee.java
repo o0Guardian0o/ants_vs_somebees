@@ -53,6 +53,17 @@ public class Bee extends Insect {
 	@Override
 	public void leavePlace () {
 		place.removeInsect(this);
+		/*
+		if (this.place.getAnt() != null) {
+			if(this.place.getAnt() instanceof Containing) {
+				Containing cont_ant = (Containing) this.place.getAnt();
+				((Ant) cont_ant).expUp(armor_init);
+				cont_ant.getInsectIn().expUp(armor_init);
+			}
+			else {
+				this.place.getAnt().expUp(armor_init);
+			}
+		}*/
 	}
 
 	/**

@@ -12,11 +12,13 @@ import javax.swing.event.ChangeListener;
 
 public class FenetreOptions extends Launcher {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public FenetreOptions() {
-	
-	int foodchange = getFood();
-	int tunnelschange = getTunnels();
-	int gallerieschange = getGalleries();
+
 	
 	this.setVisible(true);
 	this.setTitle("Options");

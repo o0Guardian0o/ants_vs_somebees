@@ -17,6 +17,7 @@ public class AntColony {
 	private QueenPlace queenPlace; // where the queen is
 	private ArrayList<Place> places; // the places in the colony
 	private ArrayList<Place> beeEntrances; // places which bees can enter (the starts of the tunnels)
+	private boolean lv_system; //execute or not the level upping system
 
 	/**
 	 * Creates a new ant colony with the given layout.
@@ -31,6 +32,62 @@ public class AntColony {
 	 *            The starting food for this colony.
 	 */
 	public AntColony (int numTunnels, int tunnelLength, int moatFrequency, int startingFood) {
+		//default lv system upping
+		this.lv_system = false;
+		if (!(this.lv_system)) {
+			System.out.println("General Report : \n Lv upping system is not execute for this party");
+		}
+		
+		// simulation values
+		food = startingFood;
+
+		// init variables
+		places = new ArrayList<Place>();
+		beeEntrances = new ArrayList<Place>();
+		queenPlace = new QueenPlace(QUEEN_NAME); // magic variable namexw
+		
+		int counter = 0;
+		
+		tunnelLength = Math.min(tunnelLength, MAX_TUNNEL_LENGTH); // don't go off the screen!
+		// set up tunnels, as a kind of linked-list
+		Place curr, prev; // reference to current exit of the tunnel
+		for (int tunnel = 0; tunnel < numTunnels; tunnel++) {
+			curr = queenPlace; // start the tunnel's at the queen
+			for (int step = 0; step < tunnelLength; step++) {
+				prev = curr; // keep track of the previous guy (who we will exit to)
+				if (counter%moatFrequency == 0 && moatFrequency != 0 && counter!=0) {
+					curr = new Water("tunnel[" + tunnel + "-" + step + "]", prev);
+					counter ++;
+				}
+				else {
+					curr = new Place("tunnel[" + tunnel + "-" + step + "]", prev); // create new place with an exit that is the previous spot
+					counter ++;	
+				} 
+				prev.setEntrance(curr); // the previous person's entrance is the new spot
+				places.add(curr); // add new place to the list
+			}
+			beeEntrances.add(curr); // current place is last item in the tunnel, so mark that it is a bee entrance
+		} // loop to next tunnel
+
+	}
+	/**
+	 * Ant Colony constructor which allowed you to choose if you want the lv_system
+	 * @param numTunnels
+	 * @param tunnelLength
+	 * @param moatFrequency
+	 * @param startingFood
+	 * @param lvsystem
+	 */
+	public AntColony (int numTunnels, int tunnelLength, int moatFrequency, int startingFood, boolean lvsystem) {
+		//lv system initalisation
+		this.lv_system = lvsystem;
+		if (this.lv_system) {
+			System.out.println("General Report : \n Level upping system is lunched for this party !");
+		}
+		else {
+			System.out.println("General Report : \n Level upping system is not lunched for this party !");
+		}
+		
 		// simulation values
 		food = startingFood;
 
@@ -220,5 +277,9 @@ public class AntColony {
 	@Override
 	public String toString () {
 		return "Food: " + food + "; " + getAllBees() + "; " + getAllAnts();
+	}
+	
+	public boolean getLvSystem() {
+		return this.lv_system;
 	}
 }

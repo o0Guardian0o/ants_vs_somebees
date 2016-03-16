@@ -41,6 +41,16 @@ public class BodyguardAnt extends Ant implements Containing {
 	}
 		
 	public void action(AntColony colony) {
+		if (colony.getLvSystem()) {
+			this.expUp(1);
+		}
+	}
+	
+	public void levelUp() {
+		this.lv ++;
+		this.armor = this.armor_init + (int) Math.ceil(Math.exp(this.lv));
+		System.out.println("Ant report : \n " + this + "has level up !" +
+				"\n He now has " + this.armor + " armor !");
 	}
 }
 

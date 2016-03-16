@@ -1,6 +1,7 @@
 package core;
 
 import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -28,12 +29,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import ants.ThrowerAnt;
 
@@ -53,14 +48,23 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 	// game models
 	private AntColony colony;
 	private Hive hive;
+	
+	
+	// essaie pour mode infini param
+	private ArrayList<Hive> hives = new ArrayList<Hive>();
+	private int new_start_turn =1;
+	private int counter = 1;
+	//fin essaie mode infini param
+	
+	
 	private GamePoint gamepoint;
 	private static final String ANT_FILE = "antlist.properties";
 	private static final String ANT_PKG = "ants";
 
 	// game clock & speed
 	public static final int FPS = 30; // target frames per second
-	public static final int TURN_SECONDS = 2; // seconds per turn
-	public static final double LEAF_SPEED = .2; // in seconds
+	public static final int TURN_SECONDS = 3; // seconds per turn
+	public static final double LEAF_SPEED = .3; // in seconds
 	private int turn; // current game turn
 	private int frame; // time elapsed since last turn
 	private Timer clock;
@@ -155,6 +159,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 		frame.add(this);
 		frame.pack();
 		frame.setVisible(true);
+		
 	}
 
 	@Override
@@ -214,9 +219,35 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 			}
 
 			// new invaders attack!
-			Bee[] invaders = hive.invade(colony, turn); // this moves the bees into the colony
-			for (Bee bee : invaders) {
-				startAnimation(bee);
+			if (!(this.hive instanceof InfinitHive)) {
+				Bee[] invaders = hive.invade(colony, turn); // this moves the bees into the colony
+				for (Bee bee : invaders) {
+					startAnimation(bee);
+				}
+			}
+			else {
+				if (this.turn != this.new_start_turn) {
+					Hive[] current_hives = hives.toArray(new Hive[0]);
+					for (Hive hive : this.hives) {
+						Bee[] invaders = hive.invade(colony, turn); // this moves the bees into the colony
+						for (Bee bee : invaders) {
+							startAnimation(bee);
+						}
+					}
+				}
+				else if (this.turn == this.new_start_turn) {
+					this.new_start_turn = this.new_start_turn + this.turn;
+					Hive new_hive = (Hive) InfinitHive.makeNewHive(1 + ((this.turn)/10), this.turn, this.turn);
+					hives.add(new_hive);
+					this.initializeBees(hives);
+					Hive[] current_hives = hives.toArray(new Hive[0]);
+					for (Hive hive : current_hives) {
+						Bee[] invaders = hive.invade(colony, turn); // this moves the bees into the colony
+						for (Bee bee : invaders) {
+							startAnimation(bee);
+						}
+					}
+				}
 			}
 
 			// if want to do this to ants as well, will need to start storing dead ones with AnimPositions
@@ -363,6 +394,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 			if (place != tunnelEnd) {
 				if (place instanceof Water) {
 					g2d.drawImage(WATER_IMAGE, rect.x, rect.y, null); //Water image !
+					
 				}
 				else {g2d.drawImage(TUNNEL_IMAGE, rect.x, rect.y, null);} // decorative image
 			}
@@ -504,7 +536,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 			sc.close();
 		}
 		catch (IOException e) { // for IOException, NumberFormatException, ArrayIndex exception... basically if anything goes wrong, don't crash
-			System.out.println("Error loading insect gui properties: " + e);
+			System.out.println("AntGame report : \n Error loading insect gui properties: " + e);
 		}
 
 	}
@@ -518,6 +550,15 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 			allBeePositions.put(bees[i], new AnimPosition((int) (HIVE_POS.x + (100 * Math.random() - 50)), (int) (HIVE_POS.y + (300 * Math.random() - 50))));
 		}
 	}
+	
+	private void initializeBees (ArrayList<Hive> hives) {
+		int sizehives = hives.size();
+		Bee[] bees = hives.get(sizehives-1).getBees();
+		for (int i = 0; i < bees.length; i++) {
+			allBeePositions.put(bees[i], new AnimPosition((int) (HIVE_POS.x + (100 * Math.random() - 50)), (int) (HIVE_POS.y + (300 * Math.random() - 50))));
+		}
+	}
+	
 
 	/**
 	 * Initializes the Colony graphics for the game.
@@ -702,7 +743,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 				img = ImageIO.read(new File(filename)); // read the image from a file
 			}
 			catch (IOException e) {
-				System.err.println("Error loading \'" + filename + "\': " + e.getMessage());
+				System.err.println("AntGame report : \n Error loading \'" + filename + "\': " + e.getMessage());
 			}
 			return img; // return the image
 		}
@@ -710,6 +751,22 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 	
 	public int getTurn() {
 		return this.turn;
+	}
+	
+	public int getNewStartTurn() {
+		return this.new_start_turn;
+	}
+	
+	public void setNewStartTurn(int i) {
+		this.new_start_turn = i;
+	}
+	
+	public int getCounter() {
+		return this.counter;
+	}
+	
+	public void setCounter(int i) {
+		this.counter = i;
 	}
 
 }

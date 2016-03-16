@@ -1,5 +1,6 @@
 package ants;
 
+import java.math.*;
 import core.Ant;
 import core.AntColony;
 
@@ -24,5 +25,17 @@ public class WallAnt extends Ant {
 	 * Do nothing.
 	 */
 	public void action (AntColony colony) {
+		if (colony.getLvSystem()) {
+			this.expUp(1);
+		}
 	}
+	
+	public void levelUp() {
+		this.lv ++;
+		this.armor = this.armor_init + (int) Math.ceil(Math.exp(this.lv));
+		System.out.println("Ant report : \n " + this + "has level up !" +
+		"\n He now has " + this.armor + " armor !");
+	}
+	
+	
 }
