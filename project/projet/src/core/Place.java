@@ -232,6 +232,18 @@ public class Place {
 			bees.remove(bee);
 			bee.setPlace(null);
 			dead_bees.add(bee);
+			System.out.println(bee);
+		}
+		else {
+			System.out.println("Place report : \n " + bee + " is not in " + this);
+		}
+	}
+	
+	public void removeInsect (Bee bee, int a) {
+		if (bees.contains(bee)) {
+			bees.remove(bee);
+			bee.setPlace(null);
+			System.out.println(bee);
 		}
 		else {
 			System.out.println("Place report : \n " + bee + " is not in " + this);

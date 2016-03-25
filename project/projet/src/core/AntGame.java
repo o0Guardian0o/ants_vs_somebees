@@ -89,7 +89,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 	public static final Point PLACE_POS = new Point(40, 180);
 	public static final Dimension PLACE_PADDING = new Dimension(10, 10);
 	public static final int PLACE_MARGIN = 10;
-	public static final Point HIVE_POS = new Point(875, 300);
+	public static final Point HIVE_POS = new Point(1875, 1300);
 	public static final int CRYPT_HEIGHT = 650;
 	public static final Point MESSAGE_POS = new Point(120, 20);
 	public static final Dimension LEAF_START_OFFSET = new Dimension(30, 30);
@@ -290,6 +290,7 @@ public class AntGame extends JPanel implements ActionListener, MouseListener {
 			turn++; // next turn
 			this.gamepoint.setMultFactor(this.turn);
 			this.gamepoint.setGamePoint(this.colony.getAllDeadBees());
+			System.out.println(this.colony.getAllDeadBees());
 			frame = 0; // reset frame
 		}
 

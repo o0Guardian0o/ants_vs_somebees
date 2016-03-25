@@ -1,3 +1,4 @@
+
 package core;
 
 /**
@@ -46,7 +47,7 @@ public class Bee extends Insect {
 	 *            The place to move to
 	 */
 	public void moveTo (Place place) {
-		this.place.removeInsect(this);
+		this.place.removeInsect(this,0);
 		place.addInsect(this);
 	}
 
